@@ -27,10 +27,22 @@ State VARCHAR(2) NOT NULL COMMENT 'State',
 Zip VARCHAR(10) NOT NULL COMMENT 'Zip code',
 CONSTRAINT PK_CUSTOMER PRIMARY KEY (CustNo) ) ;
 ```
-# Creat Table 2 Customer
+# Creat Table 2 Facility
 ```
 CREATE TABLE Facility
 (FacNo VARCHAR(8) NOT NULL COMMENT 'Facility number',
 FacName VARCHAR(30) NOT NULL COMMENT 'Facility name',
 CONSTRAINT PK_FACILITY PRIMARY KEY (FacNo) );
+```
+
+
+# Creat Table 2 Location
+```
+CREATE TABLE Location
+(LocNo VARCHAR(8) NOT NULL COMMENT 'Location number',
+FacNo VARCHAR(8) NOT NULL COMMENT 'Facility number',
+LocName VARCHAR(30) NOT NULL COMMENT 'Location name',
+CONSTRAINT PK_LOCATION PRIMARY KEY (LocNo),
+CONSTRAINT FK_FACNO FOREIGN KEY (FacNo) REFERENCES FACILITY (FacNo) );
+
 ```
