@@ -11,7 +11,7 @@ stadium. The EventPlan table defines a plan for the setup, operation, and cleanu
 The EventPlanLine table contains the individual resources required in an event plan.
 
 
-Creat Table 1 Customer
+# Creat Table 1 Customer
 ```
 use InterCollegiateAthleticDatabase;
 DROP DATABASE IF EXISTS InterCollegiateAthleticDatabase;
