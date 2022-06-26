@@ -1,1 +1,1 @@
-# ntercollegiate-Athletic-Database
+# Intercollegiate-Athletic-Database
