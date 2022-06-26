@@ -11,7 +11,7 @@ stadium. The EventPlan table defines a plan for the setup, operation, and cleanu
 The EventPlanLine table contains the individual resources required in an event plan.
 
 
-# Creat Table 1 Customer
+# Create Table 1 Customer
 ```
 use InterCollegiateAthleticDatabase;
 DROP DATABASE IF EXISTS InterCollegiateAthleticDatabase;
@@ -27,7 +27,7 @@ State VARCHAR(2) NOT NULL COMMENT 'State',
 Zip VARCHAR(10) NOT NULL COMMENT 'Zip code',
 CONSTRAINT PK_CUSTOMER PRIMARY KEY (CustNo) ) ;
 ```
-# Creat Table 2 Facility
+# Create Table 2 Facility
 ```
 CREATE TABLE Facility
 (FacNo VARCHAR(8) NOT NULL COMMENT 'Facility number',
@@ -36,7 +36,7 @@ CONSTRAINT PK_FACILITY PRIMARY KEY (FacNo) );
 ```
 
 
-# Creat Table 2 Location
+# Create Table 3 Location
 ```
 CREATE TABLE Location
 (LocNo VARCHAR(8) NOT NULL COMMENT 'Location number',
@@ -45,4 +45,94 @@ LocName VARCHAR(30) NOT NULL COMMENT 'Location name',
 CONSTRAINT PK_LOCATION PRIMARY KEY (LocNo),
 CONSTRAINT FK_FACNO FOREIGN KEY (FacNo) REFERENCES FACILITY (FacNo) );
 
+```
+
+
+```
+CREATE TABLE Employee
+(EmpNo VARCHAR(8) NOT NULL COMMENT 'Employee number',
+EmpName VARCHAR(35) NOT NULL COMMENT 'Employee name',
+Department VARCHAR(25) NOT NULL COMMENT 'Department',
+Email VARCHAR(30) NOT NULL COMMENT 'electronic mail address',
+Phone VARCHAR(10) NOT NULL,
+CONSTRAINT PK_EMPLOYEE PRIMARY KEY (EmpNo) ) ;
+
+```
+
+```
+CREATE TABLE ResourceTbl
+(ResNo VARCHAR(8) NOT NULL,
+ResName VARCHAR(30) NOT NULL,
+Rate DECIMAL(15,4) NOT NULL CHECK (Rate > 0),
+CONSTRAINT PK_RESOURCE PRIMARY KEY (ResNo) ) COMMENT 'ORIGINAL NAME:Resource';
+```
+
+```
+CREATE TABLE EventRequest
+(EventNo VARCHAR(8) NOT NULL COMMENT 'Event number',
+DateHeld DATE NOT NULL COMMENT 'Event date',
+DateReq DATE NOT NULL COMMENT 'Date requested',
+CustNo VARCHAR(8) NOT NULL COMMENT 'Customer number',
+FacNo VARCHAR(8) NOT NULL COMMENT 'Facility number',
+DateAuth DATE COMMENT 'Date authorized',
+Status VARCHAR(20) NOT NULL COMMENT 'Status of event request' CHECK (Status IN ('Pending', 'Denied',
+'Approved')),
+EstCost DECIMAL(15,4) NOT NULL COMMENT 'Estimated cost',
+EstAudience DECIMAL(11,0) NOT NULL COMMENT 'Estimated audience' CHECK (EstAudience > 0),
+BudNo VARCHAR(8) COMMENT 'Budget number',
+CONSTRAINT PK_EVENTREQUEST PRIMARY KEY (EventNo),
+CONSTRAINT FK_EVENT_FACNO FOREIGN KEY (FacNo) REFERENCES FACILITY (FacNo),
+CONSTRAINT FK_CUSTNO FOREIGN KEY (CustNo) REFERENCES CUSTOMER (CustNo) );
+```
+
+
+```
+CREATE TABLE EventPlan
+(PlanNo VARCHAR(8) NOT NULL COMMENT 'Event plan number',
+EventNo VARCHAR(8) NOT NULL COMMENT 'Event number',
+WorkDate DATE NOT NULL COMMENT 'Work date',
+Notes VARCHAR(50),
+Activity VARCHAR(50) NOT NULL,
+EmpNo VARCHAR(8),
+CONSTRAINT PK_EVENTPLAN PRIMARY KEY (PlanNo),
+CONSTRAINT FK_EMPNO FOREIGN KEY (EmpNo) REFERENCES EMPLOYEE (EmpNo),
+CONSTRAINT FK_EVENTNO FOREIGN KEY (EventNo) REFERENCES EVENTREQUEST (EventNo) );
+```
+
+
+```
+
+drop table EventPlanline;
+CREATE TABLE EventPlanLine
+(PlanNo VARCHAR(8) NOT NULL COMMENT 'Event Event plan number',
+LineNo INTEGER NOT NULL COMMENT 'line number',
+TimeStart datetime NOT NULL COMMENT 'Time start',
+TimeEnd DATEtime NOT NULL COMMENT 'Time end',
+NumberFld INTEGER NOT NULL COMMENT 'ORIGINAL NAME:number , Number of resources needed',
+LocNo VARCHAR(8) NOT NULL,
+ResNo VARCHAR(8) NOT NULL,
+ CHECK (TimeStart < TimeEnd), 
+CONSTRAINT PK_EVENTPLANLINE PRIMARY KEY (PlanNo, LineNo),
+CONSTRAINT FK_LOCNO FOREIGN KEY (LocNo) REFERENCES LOCATION (LocNo),
+CONSTRAINT FK_RESNO FOREIGN KEY (ResNo) REFERENCES RESOURCETBL (ResNo),
+CONSTRAINT FK_PLANNO FOREIGN KEY (PlanNo) REFERENCES EVENTPLAN (PlanNo) );
+```
+
+
+
+```
+
+CREATE TABLE EventPlanLine
+  (PlanNo VARCHAR(8)  NOT NULL, 
+   LineNo INTEGER  NULL, 
+   TimeStart DATE  NOT NULL, 
+   TimeEnd DATE  NULL, 
+   NumberFld INTEGER  NULL, 
+   LocNo VARCHAR(8) NOT NULL, 
+   ResNo VARCHAR(8) NOT NULL,
+    CHECK (TimeStart < TimeEnd), 
+   CONSTRAINT PK_EVENTPLANLINE PRIMARY KEY (PlanNo, LineNo),
+   CONSTRAINT FK_LOCNO FOREIGN KEY (LocNo) REFERENCES LOCATION (LocNo), 
+   CONSTRAINT FK_RESNO FOREIGN KEY (ResNo) REFERENCES RESOURCETBL (ResNo), 
+   CONSTRAINT FK_PLANNO FOREIGN KEY (PlanNo) REFERENCES EVENTPLAN (PlanNo) );
 ```
