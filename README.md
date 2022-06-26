@@ -27,3 +27,10 @@ State VARCHAR(2) NOT NULL COMMENT 'State',
 Zip VARCHAR(10) NOT NULL COMMENT 'Zip code',
 CONSTRAINT PK_CUSTOMER PRIMARY KEY (CustNo) ) ;
 ```
+# Creat Table 2 Customer
+```
+CREATE TABLE Facility
+(FacNo VARCHAR(8) NOT NULL COMMENT 'Facility number',
+FacName VARCHAR(30) NOT NULL COMMENT 'Facility name',
+CONSTRAINT PK_FACILITY PRIMARY KEY (FacNo) );
+```
